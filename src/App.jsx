@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Addbar from './components/AddBar';
-
-import Completed from './components/Completed';
 import List from './components/List';
 import { v1 as uuidv1 } from 'uuid';
 import tachyons from 'tachyons';
@@ -28,7 +26,7 @@ function App() {
 	};
 
 	const completeItem = (event) => {
-		const id = event.target.parentElement.id;
+		const id = event.target.parentElement.parentElement.id;
 		if (completedList.some((object) => object.id === id)) {
 			return;
 		}
@@ -40,7 +38,7 @@ function App() {
 	};
 
 	const returnItem = (event) => {
-		const id = event.target.parentElement.id;
+		const id = event.target.parentElement.parentElement.id;
 		if (itemList.some((object) => object.id === id)) {
 			return;
 		}
@@ -51,9 +49,21 @@ function App() {
 		updateCompleted(copy);
 	};
 
+	const deleteItem = (event) => {
+		const id = event.target.parentElement.parentElement.id;
+		const compIndex = completedList.findIndex((object) => object.id === id);
+		const copy = JSON.parse(JSON.stringify(completedList));
+		copy.splice(compIndex, 1);
+		updateCompleted(copy);
+	};
+
+	const deleteAll = () => {
+		updateCompleted([]);
+	};
+
 	return (
 		<div className="App">
-			<h2 className="tc">#todo</h2>
+			<h2 className="tc f2">#todo</h2>
 			<div id="container" className="ba flex flex-column items-center">
 				<div id="route-bar" className="bb w-60">
 					<p
@@ -88,7 +98,7 @@ function App() {
 							pushNewItem={pushNewItem}
 						></Addbar>
 					) : null}
-					<ul id="list-container">
+					<ul id="list-container" className="">
 						{route === 'active' ? (
 							itemList.map((i) => {
 								return (
@@ -101,17 +111,27 @@ function App() {
 								);
 							})
 						) : route === 'completed' ? (
-							completedList.map((i) => {
-								return (
-									<List
-										item={i.item}
-										id={i.id}
-										key={i.id}
-										completed
-										returnItem={returnItem}
-									></List>
-								);
-							})
+							<>
+								{completedList.map((i) => {
+									return (
+										<List
+											item={i.item}
+											id={i.id}
+											key={i.id}
+											completed
+											deleteItem={deleteItem}
+											route={route}
+											returnItem={returnItem}
+										></List>
+									);
+								})}
+								{completedList.length > 0 ? (
+									<button id="delete-button" className='flex justify-center items-center' onClick={deleteAll}>
+										<span className="material-icons">delete_outline</span>
+										<p>delete all</p>
+									</button>
+								) : null}
+							</>
 						) : (
 							<>
 								{itemList.map((i) => {
