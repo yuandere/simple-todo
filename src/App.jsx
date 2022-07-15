@@ -49,8 +49,10 @@ function App() {
 	};
 
 	const pushNewItem = () => {
+		if (newItem === '') {return}
 		updateList(() => itemList.concat({ id: uuidv1(), item: newItem }));
 		document.querySelector('#input-field').value = '';
+		updateNewItem('');
 	};
 
 	const completeItem = (event) => {
