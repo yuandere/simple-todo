@@ -64,7 +64,7 @@ function App() {
 	return (
 		<div className="App">
 			<h2 className="tc f2">#todo</h2>
-			<div id="container" className="ba flex flex-column items-center">
+			<div id="container" className="bt bb flex flex-column items-center">
 				<div id="route-bar" className="bb w-60">
 					<p
 						className={
