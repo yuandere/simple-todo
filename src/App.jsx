@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Addbar from './components/AddBar';
 import List from './components/List';
 import { v1 as uuidv1 } from 'uuid';
@@ -7,14 +7,42 @@ import './App.css';
 
 function App() {
 	const [route, setRoute] = useState('all');
-	const [itemList, updateList] = useState([
-		{ id: uuidv1(), item: 'example 1' },
-		{ id: uuidv1(), item: 'example 2' },
-	]);
+	const [itemList, updateList] = useState(() => {
+		if (localStorage.getItem('items') === null) {
+			return [
+				{ id: uuidv1(), item: 'example 1' },
+				{ id: uuidv1(), item: 'example 2' },
+			]
+		}	else {
+			return JSON.parse(localStorage.getItem('items'));
+		};
+	});
 	const [newItem, updateNewItem] = useState('');
-	const [completedList, updateCompleted] = useState([
-		{ id: uuidv1(), item: 'example 3' },
-	]);
+	const [completedList, updateCompleted] = useState(() => {
+		if (localStorage.getItem('completed') === null) {
+			return [
+				{ id: uuidv1(), item: 'example 3' },
+			]
+		}	else {
+			return JSON.parse(localStorage.getItem('completed'));
+		};
+	});
+
+	useEffect(() => {
+		if (itemList.length === 0) {
+			localStorage.setItem('items', '[]');
+		} else {
+			localStorage.setItem('items', JSON.stringify(itemList));
+		}
+	}, [itemList]);
+
+	useEffect(() => {
+		if (completedList.length === 0) {
+			localStorage.setItem('completed', '[]');
+		} else {
+			localStorage.setItem('completed', JSON.stringify(completedList));
+		}
+	}, [completedList]);
 
 	const grabNewItem = (event) => {
 		updateNewItem(event.target.value);
@@ -126,7 +154,11 @@ function App() {
 									);
 								})}
 								{completedList.length > 0 ? (
-									<button id="delete-button" className='flex justify-center items-center' onClick={deleteAll}>
+									<button
+										id="delete-button"
+										className="flex justify-center items-center"
+										onClick={deleteAll}
+									>
 										<span className="material-icons">delete_outline</span>
 										<p>delete all</p>
 									</button>

@@ -96,6 +96,10 @@
   padding-left: 0.25rem;
 }
 
+input[type=checkbox] {
+  cursor: pointer;
+}
+
 .twopxdown {
   transform: translateY(2px);
 }
