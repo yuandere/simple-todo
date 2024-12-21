@@ -69,8 +69,3 @@ $ npm start
 
 - [Using localStorage with React Hooks](https://blog.logrocket.com/using-localstorage-react-hooks/)
 - [Steps to replicate a design with only HTML and CSS](https://devchallenges-blogs.web.app/how-to-replicate-design/)
-
-## Contact
-
-- GitHub [@yuandere](https://github.com/yuandere)
-- Discord [@al doub#7487](https://discord.com)
